@@ -1,0 +1,48 @@
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment folders
+venv/
+.env/
+.venv/
+env/
+.env.bak/
+
+# Ignore AWS Lambda deployment packages
+lambda_deployment_package.zip
+*.zip
+
+# Ignore AWS Lambda Layers if used for Pandas or dependencies
+layers/
+
+# Ignore log and temp files
+*.log
+*.tmp
+*.bak
+
+# Ignore IDE/editor files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore the configuration and credentials
+config.json
+*.env
+
+# Ignore Python egg-info directories
+*.egg-info/
+
+# Ignore coverage reports if using testing tools like pytest
+.coverage
+.coverage.*
+
+# Ignore pip-installed packages
+pip-wheel-metadata/
