@@ -10,10 +10,12 @@ class TestApp(unittest.TestCase):
             test_predicted_data = json.load(f)
 
         event = {
-            "sample_time_window": 5,
-            "prediction_time_window": 5,
-            "ticker_symbol": "AAPL",
-            "interval": "1m",
+            "parameters": {
+                "sample_time_window": 5,
+                "prediction_time_window": 5,
+                "ticker_symbol": "AAPL",
+                "interval": "1m"
+            },
             "sample_data": test_sample_data,
             "predicted_data": test_predicted_data
         }

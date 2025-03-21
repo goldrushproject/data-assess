@@ -8,8 +8,8 @@ def lambda_handler(event, context):
     prediction_time_window = parameters['prediction_time_window']
     ticker_symbol = parameters['ticker_symbol']
     interval = parameters['interval']
-    sampled_data = event.get("sample_data", {})['data'] # Sample of stock pricing data for the given time window
-    predicted_data = event.get("predicted_data", {})['predicted_prices'] # Predicted stock pricing data for the given time window
+    sampled_data = event.get("sample_data", {}) # Sample of stock pricing data for the given time window
+    predicted_data = event.get("predicted_data", {}) # Predicted stock pricing data for the given time window
 
     # Calculate volatility index given sample data
     data_df = pd.DataFrame(sampled_data)
