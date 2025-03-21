@@ -5,12 +5,13 @@ def lambda_handler(event, context):
 
     try:
         # Extract parameters
-        sample_time_window = event.get("sample_time_window", 5)
-        prediction_time_window = event.get("prediction_time_window", 5)
-        ticker_symbol = event.get("ticker_symbol", "AAPL")
-        interval = event.get("interval", "1h")
-        sampled_data = event.get("sample_data", {}) # Sample of stock pricing data for the given time window
-        predicted_data = event.get("predicted_data", {}) # Predicted stock pricing data for the given time window
+        parameters = event.get("parameters", None)
+        sample_time_window = parameters['sample_time_window']
+        prediction_time_window = parameters['prediction_time_window']
+        ticker_symbol = parameters['ticker_symbol']
+        interval = parameters['interval']
+        sampled_data = event.get("sample_data", {})['data'] # Sample of stock pricing data for the given time window
+        predicted_data = event.get("predicted_data", {})['predicted_prices'] # Predicted stock pricing data for the given time window
 
         # Calculate volatility index given sample data
         data_df = pd.DataFrame(sampled_data)
