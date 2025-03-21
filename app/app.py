@@ -42,5 +42,5 @@ def lambda_handler(event, context):
         print(f"Event: {event}")
         return {
             "statusCode": 500,
-            "body": json.dumps({"error": str(e), "event": event}),
+            "body": json.dumps({"error": str(e), "parameters": event.get("parameters", None)}),
         }
