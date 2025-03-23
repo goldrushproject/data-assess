@@ -8,7 +8,7 @@ on:
 env:
   AWS_REGION: us-west-2
   LAMBDA_FUNCTION_NAME: Data-Assess
-  AWS_ROLE_TO_ASSUME: arn:aws:iam::650251730947:role/gitactions-lambda-role
+  AWS_ROLE_TO_ASSUME: arn:aws:iam::650251730947:role/GitActionsLambdaRole
 
 permissions:
   id-token: write
