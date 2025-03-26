@@ -1,0 +1,74 @@
+[
+  {
+    "ticker_symbol": "AAPL",
+    "interval": "1m",
+    "sample_time_window": 5,
+    "prediction_time_window": 5,
+    "user": "default",
+    "key": "models/default/AAPL/114514.pkl"
+  },
+  {
+    "ticker_symbol": "GOOG",
+    "interval": "1m",
+    "sample_time_window": 5,
+    "prediction_time_window": 5,
+    "user": "default",
+    "key": "models/default/GOOG/114514.pkl"
+  },
+  {
+    "ticker_symbol": "MSFT",
+    "interval": "1m",
+    "sample_time_window": 5,
+    "prediction_time_window": 5,
+    "user": "default",
+    "key": "models/default/MSFT/114514.pkl"
+  },
+  {
+    "ticker_symbol": "AMZN",
+    "interval": "1m",
+    "sample_time_window": 5,
+    "prediction_time_window": 5,
+    "user": "default",
+    "key": "models/default/AMZN/114514.pkl"
+  },
+  {
+    "ticker_symbol": "TSLA",
+    "interval": "1m",
+    "sample_time_window": 5,
+    "prediction_time_window": 5,
+    "user": "default",
+    "key": "models/default/TSLA/114514.pkl"
+  },
+  {
+    "ticker_symbol": "NVDA",
+    "interval": "1m",
+    "sample_time_window": 5,
+    "prediction_time_window": 5,
+    "user": "default",
+    "key": "models/default/NVDA/114514.pkl"
+  },
+  {
+    "ticker_symbol": "NFLX",
+    "interval": "1m",
+    "sample_time_window": 5,
+    "prediction_time_window": 5,
+    "user": "default",
+    "key": "models/default/NFLX/114514.pkl"
+  },
+  {
+    "ticker_symbol": "META",
+    "interval": "1m",
+    "sample_time_window": 5,
+    "prediction_time_window": 5,
+    "user": "default",
+    "key": "models/default/META/114514.pkl"
+  },
+  {
+    "ticker_symbol": "IBM",
+    "interval": "1m",
+    "sample_time_window": 5,
+    "prediction_time_window": 5,
+    "user": "default",
+    "key": "models/default/IBM/114514.pkl"
+  }
+]
