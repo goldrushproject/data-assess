@@ -75,9 +75,9 @@ def lambda_handler(event, context):
         "interval": interval,
         "volatility": volatility_index,
         "trend_indices": {
-            "1_day_trend_percentage": trend_1_day,
-            "1_week_trend_percentage": trend_1_week,
-            "1_month_trend_percentage": trend_1_month
+            "one_day_trend_percentage": trend_1_day,
+            "one_week_trend_percentage": trend_1_week,
+            "one_month_trend_percentage": trend_1_month
         },
         "risk_index_percentage": risk_index,
         "potential_gain_percentage": potential_gain,
