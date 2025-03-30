@@ -16,8 +16,8 @@ class TestApp(unittest.TestCase):
                 "ticker_symbol": "TSLA",
                 "interval": "1m"
             },
-            "sample_data": test_sample_data,
-            "predicted_data": test_predicted_data
+            "clean_sampled_data": test_sample_data,
+            "clean_predicted_data": test_predicted_data
         }
         context = {}
         response = lambda_handler(event, context)
