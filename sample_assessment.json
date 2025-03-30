@@ -1,0 +1,16 @@
+{
+    "sample_time_window": 5,
+    "prediction_time_window": 5,
+    "ticker_symbol": "TSLA",
+    "interval": "1m",
+    "volatility": 0.6665848402935667,
+    "trend_indices": {
+        "1_day_trend_percentage": -1.7593119503445862,
+        "1_week_trend_percentage": -0.020034097053299216,
+        "1_month_trend_percentage": -0.018490826930107937
+    },
+    "risk_index_percentage": 0.17297378321731952,
+    "potential_gain_percentage": -0.2654196129798696,
+    "recommendation_level": -11.704747842060925,
+    "average_RSI": 47.969185595186254
+}
