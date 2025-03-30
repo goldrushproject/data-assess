@@ -10,8 +10,8 @@ def lambda_handler(event, context):
     interval = parameters.get('interval', 'N/A')
     
     # Extract data from event
-    sampled_data = event.get("sample_data", [])['data']  # list of dicts containing historical price data
-    predicted_data = event.get("predicted_data", [])  # list of predicted close prices
+    sampled_data = event.get("clean_sampled_data", [])['data']  # list of dicts containing historical price data
+    predicted_data = event.get("clean_predicted_data", [])  # list of predicted close prices
 
     # Ensure sample_data is available
     if not sampled_data:
