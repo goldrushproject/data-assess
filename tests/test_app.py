@@ -16,7 +16,7 @@ class TestApp(unittest.TestCase):
                 "ticker_symbol": "TSLA",
                 "interval": "1m"
             },
-            "clean_sampled_data": test_sample_data,
+            "clean_sampled_data": test_sample_data['data'],
             "clean_predicted_data": test_predicted_data
         }
         context = {}
