@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '.github/workflows/deploy_lambda.yml'
+      - 'app/**'
+      - 'tests/**'
+      - 'sample_assessment.json'
+      - 'template.yaml'
 
 env:
   AWS_REGION: us-west-2
