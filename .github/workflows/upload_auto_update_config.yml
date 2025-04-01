@@ -1,0 +1,34 @@
+name: Upload Auto Update Config
+on:
+  push:
+    branches:
+        - main
+    paths:
+        - '.github/workflows/upload_auto_update_config.yml'
+        - 'auto_assess_update_config.json'
+        - 'auto_assess_update_list.json'
+
+env:
+  AWS_REGION: us-west-2
+
+jobs:
+  deploy:
+    name: Sync S3 Auto Update Configs
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          
+      - name: Upload config and list to S3
+        run: |
+          aws s3 sync ./auto_access_update_config.json s3://goldrush-main-12705/system/auto_assess_update_config.json --delete
+          aws s3 sync ./auto_access_update_list.csv s3://goldrush-main-12705/system/auto_assess_update_list.csv --delete

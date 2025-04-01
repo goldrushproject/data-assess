@@ -1,0 +1,6 @@
+{
+    "interval": "1m",
+    "sample_time_window": 1,
+    "prediction_time_window": 1,
+    "user": "default"
+}
