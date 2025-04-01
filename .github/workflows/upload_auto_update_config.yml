@@ -31,4 +31,4 @@ jobs:
       - name: Upload config and list to S3
         run: |
           aws s3 cp auto_assess_update_config.json s3://goldrush-main-12705/system/auto_assess_update_config.json 
-          aws s3 cp auto_access_update_list.csv s3://goldrush-main-12705/system/auto_assess_update_list.csv
+          aws s3 cp auto_assess_update_list.csv s3://goldrush-main-12705/system/auto_assess_update_list.csv
