@@ -6,7 +6,7 @@ on:
     paths:
         - '.github/workflows/upload_auto_update_config.yml'
         - 'auto_assess_update_config.json'
-        - 'auto_assess_update_list.json'
+        - 'auto_assess_update_list.csv'
 
 env:
   AWS_REGION: us-west-2
