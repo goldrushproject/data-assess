@@ -188,18 +188,39 @@ def lambda_handler(event, context):
     }
 
     # Compute a overall recommendation index based on composite factors in output
+    def safe_float(val, default=0.0):
+        try:
+            return float(val)
+        except (TypeError, ValueError):
+            return default
+
     def compute_recommendation_index(data, fundamental_weight=0.5, technical_weight=0.5):
-        pe_score       = 1 / data["pe_ratio"] if data["pe_ratio"] > 0 else 0
-        eps_score      = np.clip(data["eps"] / 10, 0, 1)
-        dividend_score = np.clip(data["dividend_yield"] / 10, 0, 1)
-        beta_score     = 1 / data["beta"] if data["beta"] > 0 else 0
-        efficiency_score = np.clip(data["efficiency_ratio"] / 100, 0, 1)
+        # Fundamental metrics with safe conversion
+        pe       = safe_float(data.get("pe_ratio", 0))
+        eps      = safe_float(data.get("eps", 0))
+        dividend = safe_float(data.get("dividend_yield", 0))
+        beta     = safe_float(data.get("beta", 0))
+        efficiency = safe_float(data.get("efficiency_ratio", 0))
+        
+        pe_score       = 1 / pe if pe > 0 else 0
+        eps_score      = np.clip(eps / 10, 0, 1)
+        dividend_score = np.clip(dividend / 10, 0, 1)
+        beta_score     = 1 / beta if beta > 0 else 0
+        efficiency_score = np.clip(efficiency / 100, 0, 1)
         fundamental = np.mean([pe_score, eps_score, dividend_score, beta_score, efficiency_score])
         
-        trend  = np.mean([data["short_term_trend"], data["mid_term_trend"], data["long_term_trend"]])
-        adx    = np.clip(data["current_adx"] / 50, 0, 1)
-        rsi    = 1 - np.clip(abs(data["mean_rsi"] - 50) / 50, 0, 1)
-        macd   = np.clip((data["macd_signal_ratio"] + 1) / 2, 0, 1)
+        # Technical metrics with safe conversion
+        short_term = safe_float(data.get("short_term_trend", 0))
+        mid_term   = safe_float(data.get("mid_term_trend", 0))
+        long_term  = safe_float(data.get("long_term_trend", 0))
+        current_adx = safe_float(data.get("current_adx", 0))
+        mean_rsi   = safe_float(data.get("mean_rsi", 50))
+        macd_signal_ratio = safe_float(data.get("macd_signal_ratio", 0))
+        
+        trend  = np.mean([short_term, mid_term, long_term])
+        adx    = np.clip(current_adx / 50, 0, 1)
+        rsi    = 1 - np.clip(abs(mean_rsi - 50) / 50, 0, 1)
+        macd   = np.clip((macd_signal_ratio + 1) / 2, 0, 1)
         technical = np.mean([trend, adx, rsi, macd])
         
         return fundamental_weight * fundamental + technical_weight * technical
