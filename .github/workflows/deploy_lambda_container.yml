@@ -1,0 +1,81 @@
+name: Deploy Lambda Function
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/deploy_lambda.yml'
+      - 'app/**'
+      - 'tests/**'
+      - 'sample_assessment.json'
+      - 'template.yaml'
+
+env:
+  AWS_REGION: us-west-2
+  LAMBDA_FUNCTION_NAME: Data-Assess
+  AWS_ECR_REPO: lambdas/data-assess
+  AWS_ROLE_TO_ASSUME: arn:aws:iam::650251730947:role/GitActionsLambdaRole
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy Lambda
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        role-to-assume: ${{ env.AWS_ROLE_TO_ASSUME }}
+        role-session-name: GitHubActionsLambdaDeployment
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Build, tag, and push docker image to Amazon ECR
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: ${{ env.AWS_ECR_REPO }}
+        IMAGE_TAG: latest
+      run: |
+        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG ./app
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+    - name: Check if Lambda function exists
+      id: check_lambda
+      run: |
+        if aws lambda get-function --function-name ${{ env.LAMBDA_FUNCTION_NAME }}; then
+          echo "::set-output name=lambda_exists::true"
+        else
+          echo "::set-output name=lambda_exists::false"
+        fi
+
+    - name: Create or Update Lambda function
+      run: |
+        IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.AWS_ECR_REPO }}:latest
+        if [ "${{ steps.check_lambda.outputs.lambda_exists }}" == "false" ]; then
+          echo "Creating Lambda function..."
+          aws lambda create-function \
+            --function-name ${{ env.LAMBDA_FUNCTION_NAME }} \
+            --package-type Image \
+            --code ImageUri=$IMAGE_URI \
+            --role ${{ env.AWS_ROLE_TO_ASSUME }}
+        else
+          echo "Updating Lambda function..."
+          aws lambda update-function-code \
+            --function-name ${{ env.LAMBDA_FUNCTION_NAME }} \
+            --image-uri $IMAGE_URI \
+            --publish
+        fi
