@@ -171,20 +171,7 @@ def lambda_handler(event, context):
         "macd_signal_ratio": macd_signal_ratio,
         "last_crossover": last_crossover,
         "smoothed_macd_ema": smoothed_macd_ema,
-        "atr": atr,
-        "Open": sample_df["Open"].tolist(),
-        "High": sample_df["High"].tolist(),
-        "Low": sample_df["Low"].tolist(),
-        "Close": sample_df["Close"].tolist(),
-        "Volume": sample_df["Volume"].tolist(),
-        "MA50": sample_df["Close"].rolling(window=50).mean().tolist(),
-        "MA200": sample_df["Close"].rolling(window=200).mean().tolist(),
-        "RSI": sample_df["RSI"].tolist(),
-        "+DI": sample_df["+DI"].tolist(),
-        "-DI": sample_df["-DI"].tolist(),
-        "ADX": sample_df["ADX"].tolist(),
-        "MACD": sample_df["MACD"].tolist(),
-        "Signal": sample_df["Signal"].tolist()
+        "atr": atr
     }
 
     # Compute a overall recommendation index based on composite factors in output
@@ -247,16 +234,23 @@ def lambda_handler(event, context):
         else:
             return data
 
-    # Upload output to DynamoDB (PUT)
+    # Upload indexed output to DynamoDB (PUT)
     dynamodb = boto3.resource('dynamodb')
     table_name = "StocksEDAResults" 
     table = dynamodb.Table(table_name)
-
-    # Convert all float values in the 'output' dictionary to Decimal
     output = enforce_dynamodb_types(output)
-
-    # Now upload the converted 'output' to DynamoDB
     table.put_item(Item=output)
+
+    # Upload all rows of time series dataframe to DynamoDB using batch write
+    time_series_table_name = "StocksEDAResultsTimeSeries"
+    time_series_table = dynamodb.Table(time_series_table_name)
+    with time_series_table.batch_writer() as batch:
+        for index, row in sample_df.iterrows():
+            item = row.to_dict()
+            item['symbol'] = ticker_symbol
+            item['time'] = item.pop('Datetime')
+            item = enforce_dynamodb_types(item)
+            batch.put_item(Item=item)
     
     return {
         "statusCode": 200
